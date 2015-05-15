@@ -14,18 +14,25 @@ define('ImageDirectory', 'pics/');
 function connectToInstagram($url){
 	$ch = curl_init();
 
-	curl_setopt_array($ch, array{
+	curl_setopt_array($ch, array(
 		CURLOPT_URL => $url,
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_SSL_VERIFYPEER => false,
 		CURLOPT_SSL_VERIFYHOST => 2,
 
-	});
+	));
 	$result = curl_exec($ch);
 	curl_close($ch);
 	return $result;
 
 
+}
+function getUserID($userName){
+	$url = 'http://api.instagram.com/v1/users/search?q='.$userName.'&client_id='.clientID;
+	$instagramInfo = connectToInstagram($url);
+	$results = json_decode($instagramInfo, true);
+
+	echo $results['data']['0']['id'];
 }
 
 if (isset($_GET['code'])){
@@ -48,8 +55,8 @@ if (isset($_GET['code'])){
 $result = curl_exec($curl);
 curl_close($curl);
 
-$result = json_decode($result, true);
-echo $result['user']['username'];
+$results = json_decode($result, true);
+getUserID($results['user']['username']);
 }
 else {
 ?>
