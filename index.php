@@ -53,7 +53,7 @@ function savePictures($image_url){
 	$filename = basename($image_url);
 	echo $filename . '<br>';
 
-	$destination = ImageDirectory . $filename
+	$destination = ImageDirectory . $filename;
 	file_put_contents($destination, file_get_contents($image_url));
 }
 
